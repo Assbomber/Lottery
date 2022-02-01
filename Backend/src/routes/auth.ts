@@ -67,7 +67,7 @@ route.post("/login",async (req:Request,res:Response) => {
 
         }catch(e){
             log.error("/login: An Error occurred while returning token back to client");
-            return res.status(500).send({e});
+            return res.status(500).send({error:e});
         }
     }
 });
