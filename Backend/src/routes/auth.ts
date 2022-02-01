@@ -1,4 +1,4 @@
-import express,{Router} from "express";
+import express,{Router, Request, Response} from "express";
 import User,{userValidator} from "../schemas/userSchema";
 import jwt from "jsonwebtoken";
 import joi, { Err } from "joi";
@@ -9,7 +9,7 @@ const route:Router =express.Router();
 
 
 //Register route
-route.post("/register", (req,res)=>{
+route.post("/register", (req:Request, res:Response) => {
     log.info("/register :Validating user Schema")
     const validationResult=userValidator.validate(req.body);
     if(validationResult.error) return res.status(400).send({error:validationResult.error.details[0].message});
@@ -38,7 +38,7 @@ route.post("/register", (req,res)=>{
 
 
 //Login Route
-route.post("/login",async (req,res)=>{
+route.post("/login",async (req:Request,res:Response) => {
     const loginSchema=joi.object({
         email:joi.string().email().required(),
         password:joi.string().required()
@@ -55,7 +55,7 @@ route.post("/login",async (req,res)=>{
             if(!dbResult) return res.status(404).send({error:"No user found"});
 
             log.info("/login: comparing hash passwords");
-            bcrypt.compare(req.body.password,dbResult ? dbResult.password:"",(err,result)=>{
+            bcrypt.compare(req.body.password,dbResult ? dbResult.password:"",(err:Error | undefined,result:boolean)=>{
                 if(!result) return res.status(400).send({error:"Bad credentials"});
                 log.info("/login: Signing JWT");
                 const token:string=jwt.sign({
