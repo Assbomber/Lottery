@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import log from "./utils/logger";
 import mongoose from "mongoose";
 import auth from "./routes/auth";
+import tickets from "./routes/tickets";
 
 const app:Application= express();
 
@@ -14,6 +15,7 @@ app.use(express.json());
 
 //redirecting routes
 app.use("/api/auth",auth);
+app.use("/api/tickets",tickets);
 
 
 //starting server
